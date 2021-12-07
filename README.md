@@ -99,7 +99,8 @@ avgRent
 # Courbes interactives des taux de rentabilités
 
 ```python
-matRent.plot(x=matRent.index,y=matRent.columns,title='Courbe des taux de returns',labels=dict(index='Date',value='Rentabilité',variable='Entreprise'))
+plotRent=matRent.plot(x=matRent.index,y=matRent.columns,title='Courbe des taux de returns',labels=dict(index='Date',value='Rentabilité',variable='Entreprise'))
+plotRent.show()
 ```
 
 # Courbe interactives des cours des actions
@@ -111,7 +112,8 @@ matValue=pd.DataFrame({
 'LYD':LYD['value'],
 'M2M':M2M['value']
 })
-matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cours'))
+fig0=matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cours'))
+fig0.show()
 ```
 
 # Genérer les pondérations($10.0000\; pondérations\;différentes$)
@@ -191,8 +193,7 @@ df=pd.DataFrame()
 df.insert(0,'x',x)
 ```
 ```python
-
 fig=Portefeuille.plot.scatter(Portefeuille['RisquePort'],['RentPort'],labels=dict(index='Risque Portefeuille',value='Rentability'),title='Rent par Risque pris')
 
-fig
+fig.show()
 ```
