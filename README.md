@@ -1,25 +1,34 @@
-# %% [markdown]
-# # Markowitz Portfolio Optimization
+---
+title: "README"
+author: "ABDOUL OUDOUSS DIAKITE"
+date: "12/7/2021"
+output: html_document
+---
 
-# %% [markdown]
-# - [Importations des packages](attachment:./#Importations-des-packages)
-# - [Choix d'entreprises](attachment:./#Choix-d'entreprises)
-# - [Calcul de rentabilité des actions par entreprise](attachment:./#Calcul-de-rentabilité-des-actions-par-entreprise)
-# - [Matrice de Corrélations et de Covariances](attachment:./#Matrice-de-Corrélations-et-de-Covariances)
-# - [Moyenne des rentabilités par entreprise](attachment:./#Moyenne-des-rentabilités-par-entreprise)
-# - [Courbes interactives des taux de rentabilités](attachment:./#Courbes-interactives-des-taux-de-rentabilités)
-# - [Courbe interactives des cours des actions](attachment:./#Courbe-interactives-des-cours-des-actions)
-# - [Genérer les podérations($10.0000\; pondérations\;différentes$)](attachment:./#Genérer-les-podérations($10.0000\;-pondérations\;différentes$))
-# - [Rentabilités du portefeuille pour les $10.0000$ pondérations](attachment:./#Rentabilités-du-portefeuille-pour-les-$10.0000$-pondérations)
-# - [Calcul des risques du portefeuille pour les $10.0000$ pondérations](attachment:./#Calcul-des-risques-du-portefeuille-pour-les-$10.0000$-pondérations)
-# - [Graphe Rentabilité-Risque du portefeuille](attachment:./#Graphe-Rentabilité-Risque-du-portefeuille)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-# %% [markdown]
-# # Importations des packages
+## R Markdown
 
-# %%
+
+# Markowitz
+- [Importations des packages](#Importations-des-packages)
+- [Choix d'entreprises](#Choix-d'entreprises)
+- [Calcul de rentabilité des actions par entreprise](#Calcul-de-rentabilité-des-actions-par-entreprise)
+- [Matrice de Corrélations et de Covariances](#Matrice-de-Corrélations-et-de-Covariances)
+- [Moyenne des rentabilités par entreprise](#Moyenne-des-rentabilités-par-entreprise)
+- [Courbes interactives des taux de rentabilités](#Courbes-interactives-des-taux-de-rentabilités)
+- [Courbe interactives des cours des actions](#Courbe-interactives-des-cours-des-actions)
+- [Genérer les podérations($10.0000\; pondérations\;différentes$)](#Genérer-les-podérations($10.0000\;-pondérations\;différentes$))
+- [Rentabilités du portefeuille pour les $10.0000$ pondérations](#Rentabilités-du-portefeuille-pour-les-$10.0000$-pondérations)
+- [Calcul des risques du portefeuille pour les $10.0000$ pondérations](#Calcul-des-risques-du-portefeuille-pour-les-$10.0000$-pondérations)
+- [Graphe Rentabilité-Risque du portefeuille](#Graphe-Rentabilité-Risque-du-portefeuille)
+
+# Importations des packages
+
+```{python}
 #importation des package qu'on va utiliser pour la visualisation et le traitement des données 
-
 import Casabourselib as cbl
 import pandas as pd 
 import plotly.graph_objects as go
@@ -28,25 +37,22 @@ import plotly.express as px
 import numpy as np
 import random
 pd.options.plotting.backend = "plotly"
+```
 
-# %% [markdown]
-# # Choix d'entreprises
+# Choix d'entreprises
 
-# %%
-
+```{python}
 #Alias des entreprises
 entreprises=cbl.get_tickers()
 entreprises[0:5][:]
+```
 
-# %% [markdown]
-# **Nous choisirons Lydec, Attijariwafa,M2M Group et CTM**
-# 
-# car secteurs d'activités différents
+**Nous choisirons Lydec, Attijariwafa,M2M Group et CTM**
+car secteurs d'activités différents
 
-# %% [markdown]
-# # Calcul de rentabilité des actions par entreprise
+# Calcul de rentabilité des actions par entreprise
 
-# %%
+```{python}
 entreprises,tickers,j,rentability=[],['ATW','CTM','LYD','M2M'],0,[0]
 for i in tickers:
     entreprises.append(cbl.get_price(i,'01/10/2016','01/10/2021'))
@@ -60,8 +66,9 @@ ATW,CTM,LYD,M2M=entreprises[0],entreprises[1],entreprises[2],entreprises[3]
 #Sorting by index
 ATW.index,CTM.index,LYD.index,M2M.index=pd.to_datetime(ATW.index),pd.to_datetime(CTM.index),pd.to_datetime(LYD.index),pd.to_datetime(M2M.index)
 ATW,CTM,LYD,M2M=ATW.sort_index(),CTM.sort_index(),LYD.sort_index(),M2M.sort_index()
+```
 
-# %%
+```{python}
 matRent=pd.DataFrame({
 'ATW':ATW['rentability'],
 'CTM':CTM['rentability'],
@@ -69,48 +76,47 @@ matRent=pd.DataFrame({
 'M2M':M2M['rentability']
 })
 matRent
+```
 
-# %% [markdown]
-# # Matrice de Corrélations et de Covariances
+# Matrice de Corrélations et de Covariances
 
-# %%
+```{python}
 matCorr=matRent.corr()
 matCov=matRent.cov()
 print('Matrice de corrélations :\n',matCorr)
 print('Matrice de covariances :\n',matCov)
+```
 
-# %% [markdown]
-# **Les coeffs de corr sont proche de 0 alors la diversification est assez bonne**
+**Les coeffs de corr sont proche de 0 alors la diversification est assez bonne**
 
-# %% [markdown]
-# # Moyenne des rentabilités par entreprise
+# Moyenne des rentabilités par entreprise
 
-# %%
+```{python}
 avgRent=matRent.mean()
 avgRent
+```
 
-# %% [markdown]
-# # Courbes interactives des taux de rentabilités
+# Courbes interactives des taux de rentabilités
 
-# %%
-matRent.plot(x=matRent.index,y=matRent.columns,title='Courbe des taux de returns',labels=dict(index='Date',value='Rentabilité',variable='Entreprise'),height=1000,width=1000)
+```{python}
+matRent.plot(x=matRent.index,y=matRent.columns,title='Courbe des taux de returns',labels=dict(index='Date',value='Rentabilité',variable='Entreprise'))
+```
 
-# %% [markdown]
-# # Courbe interactives des cours des actions
+# Courbe interactives des cours des actions
 
-# %%
+```{python}
 matValue=pd.DataFrame({
 'ATW':ATW['value'],
 'CTM':CTM['value'],
 'LYD':LYD['value'],
 'M2M':M2M['value']
 })
-matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cours'),width=1000,height=1000)
+matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cours'))
+```
 
-# %% [markdown]
-# # Genérer les podérations($10.0000\; pondérations\;différentes$)
+# Genérer les pondérations($10.0000\; pondérations\;différentes$)
 
-# %%
+```{python}
 import random
 vec1 = []
 vec2 = []
@@ -141,22 +147,19 @@ vec4 = np.array(vec4)
 vec=pd.DataFrame([vec1,vec2,vec3,vec4],index=tickers)
 vec=vec.transpose()
 vec
-
-# %% [markdown]
-# # Rentabilités du portefeuille pour les $10.0000$ pondérations
-
-# %%
+```
+# Rentabilités du portefeuille pour les $10.0000$ pondérations
+```{python}
 RentPort,j=pd.DataFrame(),0
 for i in tickers:
     RentPort.insert(j,i,vec[i]*avgRent[i])
     j+=1
 RentPort.insert(0,'RentPort',RentPort.sum(axis=1))
 RentPort
+```
+# Calcul des risques du portefeuille pour les $10.0000$ pondérations
 
-# %% [markdown]
-# # Calcul des risques du portefeuille pour les $10.0000$ pondérations
-
-# %%
+```{python}
 VarPort=pd.DataFrame()
 j=0
 for i in tickers:
@@ -167,35 +170,28 @@ for i in tickers:
 VarPort=VarPort.apply(lambda x: np.sum(x),axis=1)
 VarPort=VarPort.apply(lambda x: np.sqrt(x))
 VarPort.columns=['RisquePort']
-
-# %%
+```
+```{python}
 var=VarPort.to_numpy()
 var
-
-# %% [markdown]
-# # Graphe Rentabilité-Risque du portefeuille
-
-# %%
+```
+# Graphe Rentabilité-Risque du portefeuille
+```{python}
 Portefeuille=RentPort
 Portefeuille.insert(0,'RisquePort',VarPort)
 Portefeuille
-
-# %%
+```
+```{python}
 
 x=[matCov[i][i] for i in tickers]
 y=avgRent
 y=y.to_numpy()
 df=pd.DataFrame()
 df.insert(0,'x',x)
-
-# %%
+```
+```{python}
 
 fig=Portefeuille.plot.scatter(Portefeuille['RisquePort'],['RentPort'],labels=dict(index='Risque Portefeuille',value='Rentability'),title='Rent par Risque pris')
 
-fig.show()
-
-
-
-# %%
-
-# %%
+fig
+```
