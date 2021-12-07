@@ -9,8 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
 
 # Markowitz
 - [Importations des packages](#Importations-des-packages)
@@ -116,7 +114,7 @@ fig0=matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cou
 fig0.show()
 ```
 
-# Genérer les pondérations($10.0000\; pondérations\;différentes$)
+# Genérer les pondérations(10.0000 pondérations différentes$)
 
 ```python
 import random
@@ -150,7 +148,7 @@ vec=pd.DataFrame([vec1,vec2,vec3,vec4],index=tickers)
 vec=vec.transpose()
 vec
 ```
-# Rentabilités du portefeuille pour les $10.0000$ pondérations
+# Rentabilités du portefeuille pour les 10.0000 pondérations
 
 ```python
 RentPort,j=pd.DataFrame(),0
@@ -160,7 +158,7 @@ for i in tickers:
 RentPort.insert(0,'RentPort',RentPort.sum(axis=1))
 RentPort
 ```
-# Calcul des risques du portefeuille pour les $10.0000$ pondérations
+# Calcul des risques du portefeuille pour les 10.0000 pondérations
 
 ```python
 VarPort=pd.DataFrame()
