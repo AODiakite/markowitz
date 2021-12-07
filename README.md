@@ -114,7 +114,7 @@ fig0=matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cou
 fig0.show()
 ```
 
-# Genérer les pondérations(10.0000 pondérations différentes$)
+# Genérer les pondérations(10.0000 pondérations différentes)
 
 ```python
 import random
