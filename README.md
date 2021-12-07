@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Importations des packages
 
-```{python}
+``` python
 #importation des package qu'on va utiliser pour la visualisation et le traitement des données 
 import Casabourselib as cbl
 import pandas as pd 
@@ -41,7 +41,7 @@ pd.options.plotting.backend = "plotly"
 
 # Choix d'entreprises
 
-```{python}
+```python
 #Alias des entreprises
 entreprises=cbl.get_tickers()
 entreprises[0:5][:]
@@ -52,7 +52,7 @@ car secteurs d'activités différents
 
 # Calcul de rentabilité des actions par entreprise
 
-```{python}
+```python
 entreprises,tickers,j,rentability=[],['ATW','CTM','LYD','M2M'],0,[0]
 for i in tickers:
     entreprises.append(cbl.get_price(i,'01/10/2016','01/10/2021'))
@@ -68,7 +68,7 @@ ATW.index,CTM.index,LYD.index,M2M.index=pd.to_datetime(ATW.index),pd.to_datetime
 ATW,CTM,LYD,M2M=ATW.sort_index(),CTM.sort_index(),LYD.sort_index(),M2M.sort_index()
 ```
 
-```{python}
+```python
 matRent=pd.DataFrame({
 'ATW':ATW['rentability'],
 'CTM':CTM['rentability'],
@@ -80,7 +80,7 @@ matRent
 
 # Matrice de Corrélations et de Covariances
 
-```{python}
+```python
 matCorr=matRent.corr()
 matCov=matRent.cov()
 print('Matrice de corrélations :\n',matCorr)
@@ -91,20 +91,20 @@ print('Matrice de covariances :\n',matCov)
 
 # Moyenne des rentabilités par entreprise
 
-```{python}
+```python
 avgRent=matRent.mean()
 avgRent
 ```
 
 # Courbes interactives des taux de rentabilités
 
-```{python}
+```python
 matRent.plot(x=matRent.index,y=matRent.columns,title='Courbe des taux de returns',labels=dict(index='Date',value='Rentabilité',variable='Entreprise'))
 ```
 
 # Courbe interactives des cours des actions
 
-```{python}
+```python
 matValue=pd.DataFrame({
 'ATW':ATW['value'],
 'CTM':CTM['value'],
@@ -116,7 +116,7 @@ matValue.plot(title='Cours des actions',labels=dict(index='Date',value='Cours'))
 
 # Genérer les pondérations($10.0000\; pondérations\;différentes$)
 
-```{python}
+```python
 import random
 vec1 = []
 vec2 = []
@@ -149,7 +149,8 @@ vec=vec.transpose()
 vec
 ```
 # Rentabilités du portefeuille pour les $10.0000$ pondérations
-```{python}
+
+```python
 RentPort,j=pd.DataFrame(),0
 for i in tickers:
     RentPort.insert(j,i,vec[i]*avgRent[i])
@@ -159,7 +160,7 @@ RentPort
 ```
 # Calcul des risques du portefeuille pour les $10.0000$ pondérations
 
-```{python}
+```python
 VarPort=pd.DataFrame()
 j=0
 for i in tickers:
@@ -171,17 +172,17 @@ VarPort=VarPort.apply(lambda x: np.sum(x),axis=1)
 VarPort=VarPort.apply(lambda x: np.sqrt(x))
 VarPort.columns=['RisquePort']
 ```
-```{python}
+```python
 var=VarPort.to_numpy()
 var
 ```
 # Graphe Rentabilité-Risque du portefeuille
-```{python}
+```python
 Portefeuille=RentPort
 Portefeuille.insert(0,'RisquePort',VarPort)
 Portefeuille
 ```
-```{python}
+```python
 
 x=[matCov[i][i] for i in tickers]
 y=avgRent
@@ -189,7 +190,7 @@ y=y.to_numpy()
 df=pd.DataFrame()
 df.insert(0,'x',x)
 ```
-```{python}
+```python
 
 fig=Portefeuille.plot.scatter(Portefeuille['RisquePort'],['RentPort'],labels=dict(index='Risque Portefeuille',value='Rentability'),title='Rent par Risque pris')
 
