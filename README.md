@@ -1,3 +1,8 @@
+---
+title: "README"
+author: "ABDOUL OUDOUSS DIAKITE"
+date: "12/7/2021"
+---
 ## R Markdown
 
 # Markowitz
