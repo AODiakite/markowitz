@@ -39,7 +39,7 @@ date: "12/7/2021"
     import numpy as np
     import random
     pd.options.plotting.backend = "plotly"
-
+```
 # Choix d’entreprises
 
 ```python
